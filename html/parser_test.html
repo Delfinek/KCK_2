@@ -1,1 +1,16 @@
-lol
+<h2>
+	Test parsera naszej notacji poleceń na RegEx
+</h2>
+
+Szkielet inputu w naszej notacji: <input type='text' ng-model='notation_input' placeholder='input w naszej notacji' style='width:300px'/>
+</br>
+Regex:
+<span>
+	{{getParsed()}}
+</span>
+</br>
+Polecenie od użytkownika:
+<input type='text' ng-model='user_input' placeholder='co użytkownik może napisać' style='width:300px'/>
+</br>
+<span style='font-size:2em; color:rgb(86, 158, 45)' ng-show='match()'>JEST MATCH</span>
+<span style='font-size:2em; color:rgb(194, 77, 77)' ng-hide='match()'>Nie ma matcha</span>

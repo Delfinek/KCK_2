@@ -1,0 +1,20 @@
+<h2>
+	Składnia naszej fajnej notacji schematów komend:
+</h2>
+
+<pre style='width:800px; display:block;'>
+	<strong font-size:'1.2em'>Operator ():</strong>
+		np. (Mów|Gadaj|Talk) złapie nam zarówno komendę użytkownika "Mów!", "gadaj", jak i "talk";
+
+		Jeżeli operator jest opcjonalny, należy zakończyć zawartość nawiasu "|" - np "(Przyjdź|Choć|Chodź) (tu|)" wyłapie nam zarówno "Przyjdź", jak i "Przyjdź tu";
+
+
+	Parametry:
+		np schemat "Idź w #kierunek" jeżeli user wpisze "Idź w lewo" utworzy tymczasową zmienną #kierunek i przypisze jej wartość "lewo"
+
+		Nazwy parametrów zaczynają się od # lub od $.
+
+		Jeżeli nazwa parametru zaczyna się od "$", to wartość parametru może zawierać spacje lub inne znaki rozdzielające słowa
+
+		Jeżeli nazwa parametru zaczyna się od "#", to wartość tego parametru nie może zawierać znaków rozdzielających, ergo program będzie szukał tylko jednego słowa w miejscu parametru
+</pre>
