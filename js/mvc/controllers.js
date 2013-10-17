@@ -3,7 +3,7 @@ app.controller('parserTestController', ['$scope', 'notationParser', function($sc
 	$scope.user_input = "Idz w lewo";
 
 	$scope.getParsed = function(){
-		return notationParser.parseToRegex($scope.notation_input);	
+		return notationParser.parseToRegex($scope.notation_input).toString();	
 	}
 
 	$scope.match = function(){
