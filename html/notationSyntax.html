@@ -3,8 +3,12 @@
 </h2>
 
 <pre style='width:800px; display:block;'>
+	Wielkie/małe litery nie mają znaczenia!
 	<strong font-size:'1.2em'>Operator ():</strong>
+
 		np. (Mów|Gadaj|Talk) złapie nam zarówno komendę użytkownika "Mów!", "gadaj", jak i "talk";
+
+		Operator ten można zagnieżdżać, czyli np "(Id(z|ź)) w lewo" wyłapie zarówno "Idź w lewo", jak i "Idz w lewo"
 
 		Jeżeli operator jest opcjonalny, należy zakończyć zawartość nawiasu znakiem "|" - np "(Przyjdź|Choć|Chodź) (tu|)" wyłapie nam zarówno "Przyjdź", jak i "Przyjdź tu";
 
@@ -18,7 +22,7 @@
 
 		Jeżeli nazwa parametru zaczyna się od "#", to wartość tego parametru nie może zawierać znaków rozdzielających, ergo program będzie szukał tylko jednego słowa w miejscu parametru
 
-	Lista wyboru: !!jeszcze niezaimplementowałem
+	Lista wyboru: !!jeszcze nie zaimplementowałem
 		np "Idź w %kierunek(prawo|lewo|górę|dół)"
 
 		tworzy zmienną %kierunek i przypisuje jej jedną z wartości prawo/lewo/góra/dół. Nie ma matcha jeżeli opcja nie pasuje do tych z listy
