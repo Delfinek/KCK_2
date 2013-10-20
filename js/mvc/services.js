@@ -41,13 +41,65 @@ app.service('notationParser', [function(){
 	}
 
 	parser.notationMatchesInput = function(notation, input){
-		input = input.toLowerCase();
-		notation = notation.toLowerCase();
-		console.log(input);
-		var regex = parser.parseToRegex(notation);
-		//console.log("!", regex);
-		return input.match(regex)!=null;
+		if(input==undefined){
+			return false;
+		}else{
+			input = input.toLowerCase();
+			notation = notation.toLowerCase();
+			console.log(input);
+			var regex = parser.parseToRegex(notation);
+			//console.log("!", regex);
+			return input.match(regex)!=null;			
+		}
 	}
 
 	return parser;
 }]);
+
+app.service('speechRecognition', [function(){
+	var ret = {};
+	var recognition = new webkitSpeechRecognition();
+
+	recognition.continuous = true;
+  	recognition.interimResults = true;
+
+	ret.result = "";
+
+	ret.start = function(){
+		recognition.start();
+	}
+
+	ret.onResult;
+
+	ret.setLan = function(newVal){
+		recognition.lang = newVal;
+	}
+
+	recognition.onresult = function(event){
+		var interim_transcript = '';
+	    for (var i = event.resultIndex; i < event.results.length; ++i) {
+	      if (event.results[i].isFinal) {
+	        ret.result += event.results[i][0].transcript;
+	      } else {
+	        //ret.result += event.results[i][0].transcript;
+	      }
+	    }
+	    console.log(ret.result);
+	    //console.log(ret.onResult);
+		if(typeof ret.onResult =='function'){
+			ret.onResult();
+		};
+	    //result = capitalize(result);
+	}
+
+	ret.getResult = function(){
+		return ret.result;
+	}
+
+	ret.stop = function(){
+		recognition.stop();
+	}
+
+	return ret;
+
+}])

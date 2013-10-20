@@ -10,7 +10,11 @@ Regex:
 </span>
 </br>
 Polecenie od użytkownika:
-<input type='text' ng-model='user_input' placeholder='co użytkownik może napisać' style='width:300px'/>
+<input type='text' ng-model='user_input' placeholder='co użytkownik może napisać' style='width:300px'/><button ng-click='startVoice()'>mikrofon</button>
+<select ng-model = 'language'>
+	<option value = 'pl_PL'>polski</option>
+	<option value='en_US'>angielski</option>
+</select>
 </br>
 <span style='font-size:2em; color:rgb(86, 158, 45)' ng-show='match()'>JEST MATCH</span>
 <span style='font-size:2em; color:rgb(194, 77, 77)' ng-hide='match()'>Nie ma matcha</span>
