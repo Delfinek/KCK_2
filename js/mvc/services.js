@@ -2,6 +2,18 @@ app.service('notationParser', [function(){
 	var parser = {};
 
 	parser.parseToRegex = function(input){
+		input = input.replace(/\?/g, "\\?");
+		console.log(input);
+		input = input.replace(/\)\\\?/g, ")?");
+		console.log(input);
+
+
+		//!!!!remove unnecesasary escapes
+
+
+
+
+
 		//first parse all the (opt1|opt2|...) alternatives
 		var opt_reg = /\([\w\| ]+\)/g;
 		//console.log(input);
@@ -35,6 +47,8 @@ app.service('notationParser', [function(){
 			}
 			processed_input = processed_input.replace(param_names[i], new_regex)
 		}
+		processed_input = processed_input.replace(/[ ,.;]+/g, "\\W+");
+		processed_input="^" + processed_input + "$"; 	
 		var ret = new RegExp(processed_input);
 		//console.log(ret);
 		return ret;

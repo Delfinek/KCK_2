@@ -10,8 +10,8 @@
 
 		Operator ten można zagnieżdżać, czyli np "(Id(z|ź)) w lewo" wyłapie zarówno "Idź w lewo", jak i "Idz w lewo"
 
-		Jeżeli operator jest opcjonalny, należy zakończyć zawartość nawiasu znakiem "|" - np "(Przyjdź|Choć|Chodź) (tu|)" wyłapie nam zarówno "Przyjdź", jak i "Przyjdź tu";
-
+		Operator można uczynić opcjonalnym kończąc go znakiem zapytania, np "Go (to the)? left" zmatchuje zarówno "go to the left", jak i "go left".
+		
 
 	Parametry:
 		np schemat "Idź w #kierunek" jeżeli user wpisze "Idź w lewo" utworzy tymczasową zmienną #kierunek i przypisze jej wartość "lewo"
