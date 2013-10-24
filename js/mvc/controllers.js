@@ -1,5 +1,5 @@
 app.controller('parserTestController', ['$scope', 'notationParser', 'speechRecognition', function($scope, notationParser, speechRecognition){
-	$scope.notation_input = "(Idz|Pojdz) w $kierunek";
+	$scope.notation_input = "(Idz|Pojdz) w (yis)? #kierunek";
 	$scope.user_input = "Idz w lewo";
 	$scope.language = "en_US";
 

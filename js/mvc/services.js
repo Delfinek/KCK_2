@@ -48,6 +48,7 @@ app.service('notationParser', [function(){
 			processed_input = processed_input.replace(param_names[i], new_regex)
 		}
 		processed_input = processed_input.replace(/[ ,.;]+/g, "\\W+");
+		processed_input = processed_input.replace(")?\\W+", "\\W+)?");
 		processed_input="^" + processed_input + "$"; 	
 		var ret = new RegExp(processed_input);
 		//console.log(ret);
