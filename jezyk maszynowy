@@ -1,0 +1,5 @@
+Logicznie wydawałoby się, żeby naszą planszę w jakiś sposób oznaczyć, żeby każde pole miało swoje unikatowe współrzędne. W ten sposób "feed nyan cat" mogłoby zostać przetłumaczone na go(x,y); gdzie x, y - współrzędne pola, gdzie nasz Nyan Cat się znajduje.
+
+W ten sam sposób komenda "move to the left" oznaczałaby przesunięcie o wektor [-1,0], co maszynowo mogłoby zostać przedstawiono jako go(x,y); gdzie tym razem x, y - współrzędne pola już po translacji o dany wektor.
+
+Myślę, że w ten sposób przemieszczanie się po planszy mamy załatwione za pomocą jednej, dwuargumentowej funkcji go(x,y).
