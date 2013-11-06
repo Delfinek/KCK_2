@@ -1,0 +1,5 @@
+Logicznie wydawa³oby siê, ¿eby nasz¹ planszê w jakiœ sposób oznaczyæ, ¿eby ka¿de pole mia³o swoje unikatowe wspó³rzêdne. W ten sposób "feed nyan cat" mog³oby zostaæ przet³umaczone na go(x,y); gdzie x, y - wspó³rzêdne pola, gdzie nasz Nyan Cat siê znajduje.
+
+W ten sam sposób komenda "move to the left" oznacza³aby przesuniêcie o wektor [-1,0], co maszynowo mog³oby zostaæ przedstawiono jako go(x,y); gdzie tym razem x, y - wspó³rzêdne pola ju¿ po translacji o dany wektor.
+
+Myœlê, ¿e w ten sposób przemieszczanie siê po planszy mamy za³atwione za pomoc¹ jednej, dwuargumentowej funkcji go(x,y).
