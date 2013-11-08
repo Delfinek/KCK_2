@@ -3,9 +3,7 @@ app.service('notationParser', [function(){
 
 	parser.parseToRegex = function(input){
 		input = input.replace(/\?/g, "\\?");
-		console.log(input);
 		input = input.replace(/\)\\\?/g, ")?");
-		console.log(input);
 
 
 		//!!!!remove unnecesasary escapes
@@ -16,8 +14,6 @@ app.service('notationParser', [function(){
 
 		//first parse all the (opt1|opt2|...) alternatives
 		var opt_reg = /\([\w\| ]+\)/g;
-		//console.log(input);
-		//console.log(opt_reg);
 		var matches = input.match(opt_reg);
 		for(var i in matches){
 			var match = matches[i];
@@ -30,7 +26,6 @@ app.service('notationParser', [function(){
 		for(var i in new_param_names){
 			param_names.push(new_param_names[i]);
 		}
-		////console.log(param_names);
 		var hash_param_reg = /\#\w+/g;
 		var new_param_names = input.match(hash_param_reg);
 		for(var i in new_param_names){
@@ -38,7 +33,6 @@ app.service('notationParser', [function(){
 		}
 		var processed_input = input;
 		for(var i in param_names){
-			//console.log(param_names[i]);
 			var new_regex;
 			if(param_names[i][0]=="$"){
 				new_regex = "[\\w ]+";
@@ -49,7 +43,6 @@ app.service('notationParser', [function(){
 		}
 		processed_input = processed_input.replace(/[ ,.;]+/g, "\\W+");
 		processed_input = processed_input.replace(/\([^\(]*\)\?/, function(match){
-			//alert(match);
 			match = match.replace("(", "((");
 			match = match.replace(")?", ")\\W+)?");
 			return match;
@@ -57,7 +50,6 @@ app.service('notationParser', [function(){
 		processed_input = processed_input.replace(")?\\W+", ")?");
 		processed_input="^" + processed_input + "$"; 	
 		var ret = new RegExp(processed_input);
-		//console.log(ret);
 		return ret;
 	}
 
@@ -67,9 +59,7 @@ app.service('notationParser', [function(){
 		}else{
 			input = input.toLowerCase();
 			notation = notation.toLowerCase();
-			console.log(input);
 			var regex = parser.parseToRegex(notation);
-			//console.log("!", regex);
 			return input.match(regex)!=null;			
 		}
 	}
@@ -105,12 +95,9 @@ app.service('speechRecognition', [function(){
 	        //ret.result += event.results[i][0].transcript;
 	      }
 	    }
-	    console.log(ret.result);
-	    //console.log(ret.onResult);
 		if(typeof ret.onResult =='function'){
 			ret.onResult();
 		};
-	    //result = capitalize(result);
 	}
 
 	ret.getResult = function(){
@@ -123,4 +110,143 @@ app.service('speechRecognition', [function(){
 
 	return ret;
 
+}])
+
+
+app.factory('tile', [function(){
+	var tile = function(x,y){
+
+		this.isObstacle=false;
+
+		this.getContent = function(){
+			return x + " " + y;
+		}
+
+
+	}
+
+	return tile;
+}]);
+
+app.service('map',  ['tile', function(tile){
+	var map = {};
+	map.tiles = [];
+	map.width = 20;
+	map.height = 20;
+	var cur = 65;
+	for(var i=1; i<=map.width; i++){
+		map.tiles[i]=[];
+		for(var j=1; j<=map.height; j++){
+			map.tiles[i][j]=new tile(i,j);
+			if((i+j)%2==0){
+				map.tiles[i][j].isObstacle = true;				
+			}
+			//console.log(map.tiles[i][j].getContentL());
+			cur++;
+		}
+	}
+
+	map.getTile = function(x,y){
+ 		return map.tiles[x][y];
+	}
+
+	return map;
+}]);
+
+app.factory('grid_square', ['map', function(map){
+	var grid_square = function(x, y){
+
+		//to remove
+			this.x=x;
+		this.y=y;
+		this.tile = map.getTile(x,y);
+
+		this.getContent = function(){
+			return map.getTile(x,y);
+		}
+
+		this.setPosition = function(xNew, yNew){
+			x = xNew;
+			y = yNew;
+			this.reloadTile();
+		}
+
+		this.getX = function(){
+			return x;
+		}
+
+		this.getY = function(){
+			return y;
+		}
+
+		this.reloadTile = function(){
+			this.tile = map.getTile(x,y);
+		}
+
+	}
+
+	return grid_square;
+}])
+
+app.factory('Grid', ['grid_square', 'map', function(grid_square, map){
+	var gridL = function(){
+		this.width = 10;
+		this.height = 10;////why doesn't it work correctly for 10+?
+		this.squares = [];
+		for(var i=1; i<=this.width; i++){
+			this.squares[i] = [];
+			for(var j=1; j<=this.height; j++){
+				this.squares[i][j] = new grid_square(i, j);
+			}
+		}
+
+		this.offset = {
+			x: 0,
+			y: 0
+		}
+
+
+		this.move = function(hor,ver){
+			max_offset = {
+				x: map.width - this.width,
+				y: map.height - this.height
+			}
+			this.offset.x-=ver;
+			this.offset.y+=hor;
+			if(this.offset.x>max_offset.x){
+				this.offset.x=max_offset.x;
+			}
+			if(this.offset.y>max_offset.y){
+				this.offset.y=max_offset.y;
+			}
+			if(this.offset.x<0){
+				this.offset.x=0;
+			}
+			if(this.offset.y<0){
+				this.offset.y=0;
+			}
+			this.redraw();
+		}
+
+		this.redraw = function(){
+			for(var i in this.squares){
+				for(var j in this.squares[i]){
+					var square = this.squares[i][j];
+					if(square instanceof grid_square){
+						var newX = parseInt(i)+parseInt(this.offset.x);
+						var newY = parseInt(j)+parseInt(this.offset.y);
+						square.setPosition(newX, newY);	
+					}
+					//var oldX = square.getX();
+					//var oldY = square.getY();
+				}
+			}
+		}
+
+		this.redraw();
+
+
+		return this;
+	}
+	return (gridL);
 }])

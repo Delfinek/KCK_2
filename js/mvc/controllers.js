@@ -34,3 +34,12 @@ app.controller('parserTestController', ['$scope', 'notationParser', 'speechRecog
 		speechRecognition.stop();
 	}
 }]);
+
+app.controller('gridTestController', ['$scope', 'Grid', function($scope, Grid){
+	$scope.grid = new Grid();
+	//console.log('gridView', $scope.gridView);
+
+	$scope.right = function(){
+		$scope.grid.move(1, 0);
+	}
+}])

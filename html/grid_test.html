@@ -1,0 +1,11 @@
+<h2>Test Grida</h2>
+<div ng-controller='gridTestController'>
+	<button ng-click='grid.move(0, 1)'>up</button><br/>
+	<button ng-click='grid.move(-1, 0)'>left</button>
+	<button ng-click='grid.move(1, 0)'>right</button><br/>
+	<button ng-click='grid.move(0, -1)'>down</button>
+	
+	<div ng-include="'templates/grid.html'" >
+
+	</div>
+</div>

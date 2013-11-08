@@ -1,0 +1,7 @@
+<div >
+	<div ng-repeat='row in grid.squares'>
+		<div ng-repeat='square in row | orderBy:square.y' class='grid_square' ng-show='square.x!=undefined' ng-class='{obstacle: square.tile.isObstacle}'>
+			{{square.tile.getContent()}}
+		</div>
+	</div>
+</div>
