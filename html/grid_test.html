@@ -1,10 +1,12 @@
 <h2>Test Grida</h2>
 <div ng-controller='gridTestController'>
-	<button ng-click='grid.move(0, 1)'>up</button><br/>
-	<button ng-click='grid.move(-1, 0)'>left</button>
-	<button ng-click='grid.move(1, 0)'>right</button><br/>
-	<button ng-click='grid.move(0, -1)'>down</button>
-	
+	<button ng-click='move(0, step)'>up</button><br/>
+	<button ng-click='move(-step, 0)'>left</button>
+	<button ng-click='move(step, 0)'>right</button><br/>
+	<button ng-click='move(0, -step)'>down</button>
+	<div>
+		step:<input type='text' ng-model='step'>{{step}}
+	</div>
 	<div ng-include="'templates/grid.html'" >
 
 	</div>

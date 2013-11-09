@@ -6,7 +6,12 @@ body {
   height: 35px;
   border: 1px solid black;
   display: inline-block;
-  white-space: nowrap; }
+  white-space: nowrap;
+  box-sizing: border-box; }
 
 .grid_square.obstacle {
   background-color: gray; }
+
+.grid_container {
+  overflow: hidden;
+  white-space: nowrap; }

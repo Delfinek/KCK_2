@@ -39,7 +39,9 @@ app.controller('gridTestController', ['$scope', 'Grid', function($scope, Grid){
 	$scope.grid = new Grid();
 	//console.log('gridView', $scope.gridView);
 
-	$scope.right = function(){
-		$scope.grid.move(1, 0);
+	$scope.step = 2;
+
+	$scope.move = function(a,b){
+		$scope.grid.move(a,b);
 	}
 }])

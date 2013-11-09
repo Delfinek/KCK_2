@@ -188,8 +188,11 @@ app.factory('grid_square', ['map', function(map){
 	return grid_square;
 }])
 
-app.factory('Grid', ['grid_square', 'map', function(grid_square, map){
+app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, map, $rootScope){
 	var gridL = function(){
+		this.square_size=35;
+		this.animation_speed = 250;
+		this.orig_anim_speed = this.animation_speed;
 		this.width = 10;
 		this.height = 10;////why doesn't it work correctly for 10+?
 		this.squares = [];
@@ -205,27 +208,101 @@ app.factory('Grid', ['grid_square', 'map', function(grid_square, map){
 			y: 0
 		}
 
+		this.temp_offset = {
+			x:0,
+			y:0
+		}
+
+		this.clearMoveBuffer = function(){
+			this.move_buffer ={
+				top:[],
+				bottom:[],
+				left:[],
+				right:[]
+			}
+		}
+
+		this.clearMoveBuffer();
+
+		this.resetTempOffset = function(){
+			this.temp_offset.x=0;
+			this.temp_offset.y=0;
+		}
+
+		this.createMoveBuffer = function(hor,ver){
+			var hor_buffer;
+			if(hor>0){
+				hor_buffer = this.move_buffer.right;
+			}else{
+				hor_buffer = this.move_buffer.left;
+			}
+			var ver_buffer;
+			if(ver>0){
+				ver_buffer = this.move_buffer.top;
+			}else{
+				ver_buffer = this.move_buffer.bottom;
+			}
+			for(var i=1; i<=ver; i++){
+				ver_buffer[i] = [];
+				for(var j=1; j<=this.width; j++){
+					ver_buffer[i][j] = new grid_square(this.offset.x+this.width+i, this.offset.y+this.offset.height+j);
+				}
+			}
+			for(var i=1; i<=this.height; i++){
+				hor_buffer[i] = [];
+				for(var j=1; j<=hor; j++){
+					//hor_buffer[i][j] = new grid_square(this.offset.x+this.width+i, this.offset.y+this.offset.height+j);
+					hor_buffer[i][j] = new grid_square(i, this.width+this.offset.y+j);
+				}
+			}
+		}
 
 		this.move = function(hor,ver){
-			max_offset = {
-				x: map.width - this.width,
-				y: map.height - this.height
-			}
+			console.log(hor,ver);
+			var that = this;
+			this.temp_offset.x=hor;
+			this.temp_offset.y = ver;
+			this.createMoveBuffer(hor,ver);
 			this.offset.x-=ver;
-			this.offset.y+=hor;
-			if(this.offset.x>max_offset.x){
-				this.offset.x=max_offset.x;
-			}
-			if(this.offset.y>max_offset.y){
-				this.offset.y=max_offset.y;
-			}
-			if(this.offset.x<0){
-				this.offset.x=0;
-			}
-			if(this.offset.y<0){
-				this.offset.y=0;
-			}
-			this.redraw();
+			this.offset.y=parseInt(hor)+parseInt(this.offset.y);
+			setTimeout(function(){
+				$rootScope.$apply();
+			}, 1);
+			setTimeout(function(){
+				max_offset = {
+					x: map.width - that.width,
+					y: map.height - that.height
+				}
+				var rubber = false;
+				if(that.offset.x>max_offset.x){
+					rubber = true;
+					that.offset.x=max_offset.x;
+				}
+				if(that.offset.y>max_offset.y){
+					rubber = true;
+					that.offset.y=max_offset.y;
+				}
+				that.animation_speed = 0;
+				if(that.offset.x<0){
+					rubber = true;
+					that.offset.x=0;
+				}
+				if(that.offset.y<0){
+					rubber = true;
+					that.offset.y=0;
+				}
+				if(rubber){
+					that.animation_speed = that.orig_anim_speed/2;
+				}
+				that.redraw();
+				that.resetTempOffset();
+				that.clearMoveBuffer();
+				$rootScope.$apply();
+				setTimeout(function(){
+					that.animation_speed = that.orig_anim_speed;
+					$rootScope.$apply();
+				});
+			}, that.animation_speed);
 		}
 
 		this.redraw = function(){
