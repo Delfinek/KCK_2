@@ -7,9 +7,9 @@ body{
 	width:35px;
 	height:35px;
 	border:1px solid black;
-	display:inline-block;
-	white-space:nowrap;
+	display:block;
 	box-sizing:border-box;
+	position:absolute;
 }
 
 .grid_square.obstacle{
@@ -19,4 +19,9 @@ body{
 .grid_container{
 	overflow:hidden;
 	white-space:nowrap;
+	position:relative;
+}
+
+.grid_row{
+	position:relative;
 }

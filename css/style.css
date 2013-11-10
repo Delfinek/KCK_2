@@ -15,3 +15,6 @@ body {
 .grid_container {
   overflow: hidden;
   white-space: nowrap; }
+
+.grid_row {
+  position: relative; }

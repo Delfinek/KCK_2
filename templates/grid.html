@@ -1,12 +1,9 @@
 {{grid.offset}}
-<div style='width:{{grid.width*grid.square_size}}px' class='grid_container'>
-	<div style='-webkit-transition: all {{grid.animation_speed}}ms; -webkit-transform:translateX({{(-1)*grid.square_size*grid.temp_offset.x}}px) translateY({{grid.square_size*grid.temp_offset.y}}px)'>
-		<div ng-repeat='row in grid.squares' style=''>
-			<div ng-repeat='square in row' class='grid_square' ng-show='square.x!=undefined' ng-class='{obstacle: square.tile.isObstacle}'>
-				{{square.tile.getContent()}}
-			</div>
-			<div ng-repeat='square in grid.move_buffer.right[$index]' class='grid_square' ng-show='square.x!=undefined' ng-class='{obstacle: square.tile.isObstacle}' style="position: relative; left: -3.5px;">
-				{{square.tile.getContent()}}
+<div class='grid_container' style='width: {{grid.viewport_size.width*grid.square_size}}px; height:{{grid.viewport_size.width*grid.square_size}}px; '>
+	<div style='-webkit-transition:all {{grid.animation_speed}}ms; -webkit-transform: translateX({{(-1)*grid.offset.x*grid.square_size}}px) translateY({{grid.offset.y*grid.square_size}}px); -webkit-transition-timing-function:{{grid.anim_ease}};' >
+		<div ng-repeat='row in grid.squares'>
+			<div ng-repeat='square in row' class='grid_square' ng-show='square.x!=undefined' ng-class='{obstacle: square.getContent().isObstacle}'>
+				{{square.getContent().getContent()}}
 			</div>
 		</div>
 	</div>
