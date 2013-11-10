@@ -130,7 +130,20 @@ app.service('speechRecognition', [function(){
 app.factory('tile', [function(){
 	var tile = function(x,y){
 
-		this.isObstacle=false;
+		this.objects = [];
+
+		this.isObstacle=function(){
+			for(var i in this.objects){
+				if(this.objects[i].isObstacle){
+					return true;
+				}
+			}
+			return false;
+		}
+
+		this.putObject = function(object){
+			this.objects.push(object);
+		}
 
 		this.getContent = function(){
 			return x + " " + y;
@@ -142,18 +155,21 @@ app.factory('tile', [function(){
 	return tile;
 }]);
 
-app.service('map',  ['tile', function(tile){
+app.service('map',  ['tile', 'object_collection', function(tile, object_collection){
+	console.log(object_collection);
 	var map = {};
 	map.tiles = [];
-	map.width = 100;
-	map.height = 100;
+	map.width = 50;
+	map.height = 50;
 	var cur = 65;
 	for(var i=1; i<=map.width; i++){
 		map.tiles[i]=[];
 		for(var j=1; j<=map.height; j++){
 			map.tiles[i][j]=new tile(i,j);
-			if((i+j)%2==0){
-				map.tiles[i][j].isObstacle = true;				
+			if(Math.round(Math.random()*2)%2==0){
+				map.tiles[i][j].putObject(object_collection.getObjectByID(0));			
+			}else{
+				map.tiles[i][j].putObject(object_collection.getObjectByID(1));			
 			}
 			//console.log(map.tiles[i][j].getContentL());
 			cur++;
@@ -252,8 +268,16 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 				this.offset.x=-1;
 				rubber = true;
 			}
+			if(this.offset.x>this.width-this.viewport_size.width){
+				this.offset.x = this.width-this.viewport_size.width+1;
+				rubber = true;
+			}
 			if(this.offset.y>=0 && ver!=0){
 				this.offset.y=1;
+				rubber = true;
+			}
+			if(this.offset.y<(-1)*(this.height-this.viewport_size.height)){
+				this.offset.y = (-1)*(this.height-this.viewport_size.height+1);
 				rubber = true;
 			}
 			console.log(rubber);
@@ -299,3 +323,100 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 	}
 	return (gridL);
 }])
+
+app.factory('sprite', [function(){
+	var sprite_factory = function(params){
+
+		//###########   Defaults #########
+		this.sprite_filename = 'land.png'
+		this.square_size = 35;
+		this.frames = {
+			'frame1': {
+				height:1,
+				width:1,
+				left_top: [0,0]
+			},
+			'frame2': {
+				height:1,
+				width:1,
+				left_top: [0,1]
+			}
+		};
+		//###########################
+
+		for(var i in params){
+			this[i] = params[i];
+		}
+	}
+
+	return sprite_factory;
+}])
+
+app.factory('object', [function(){
+	var obj_factory = function(params){
+		this.name;
+		this.isObstacle;
+		this.sprite;		
+		this.current_frame = {};
+		for(var i in params){
+			this[i] = params[i];
+		}
+
+		for(var i in this.sprite.frames){
+			this.current_frame = this.sprite.frames[i];
+		}
+	}
+
+	return obj_factory;
+}])
+
+app.service('object_collection', ['object', 'sprite', function(object, sprite){
+	var collection = {};
+	collection.objects = {};
+	collection.objects[0] = new object({
+		name: 'grass',
+		isObstacle: false,
+		sprite: new sprite({
+			sprite_filename: 'land.png',
+			square_size: 35, //not necessary, can be set by default
+			frames: {
+				'frame1': {
+					height:1,
+					width:1,
+					left_top: [0,0]
+				},
+				'frame2': {
+					height:1,
+					width:1,
+					left_top: [0,1]
+				}
+			}
+		})
+	});
+	collection.objects[1] = new object({
+		name: 'water',
+		isObstacle: true,
+		sprite: new sprite({
+			sprite_filename: 'land.png',
+			square_size: 35, //not necessary, can be set by default
+			frames: {
+				'frame1': {
+					height:1,
+					width:1,
+					left_top: [1,0]
+				},
+				'frame2': {
+					height:1,
+					width:1,
+					left_top: [1,1]
+				}
+			}
+		})
+	});
+
+	collection.getObjectByID = function(id){
+			return collection.objects[id]
+		}
+
+	return collection;
+}]);
