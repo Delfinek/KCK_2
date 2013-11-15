@@ -20,9 +20,6 @@ app.service('notationParser', [function(){
 		input = input.replace(/\)\\\?/g, ")?");
 
 
-		//!!!!remove unnecesasary escapes
-
-
 
 
 
@@ -159,8 +156,9 @@ app.service('map',  ['tile', 'object_collection', function(tile, object_collecti
 	console.log(object_collection);
 	var map = {};
 	map.tiles = [];
-	map.width = 50;
-	map.height = 50;
+	map.width = 100;
+	map.height = 100;
+	console.log(map.width, map.height);
 	var cur = 65;
 	for(var i=1; i<=map.width; i++){
 		map.tiles[i]=[];
@@ -228,11 +226,12 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 		this.orig_anim_ease = this.default_anim_ease;
 		this.anim_ease = this.default_anim_ease;
 		this.orig_anim_speed = this.animation_speed;
+		this.buffer_size = 8;
 		this.width = map.width;
 		this.height = map.height;
 		this.viewport_size = {
-			width:15,
-			height:15
+			width:10,
+			height:10
 		}
 		this.squares = [];
 		for(var i=1; i<=this.width; i++){
@@ -284,13 +283,27 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 			if(rubber){
 				this.anim_ease = 'ease-in';
 			}
-			setTimeout(function(){
+
+
+			//######rubber:
+
+
+			/*setTimeout(function(){
 				self.animation_speed=self.orig_anim_speed;
 				if(rubber){
-					self.bounceBack();					
+					self.bounceBack();	
 				}
 				//$rootScope.$apply();
-			}, this.animation_speed);				
+			}, this.animation_speed);*/
+			//this.redraw();
+
+			console.log('setting timeout to ', this.animation_speed);
+			setTimeout(function(){
+				self.redraw();
+				//console.log('redraw')
+				$rootScope.$apply();
+			//}, this.animation_time)
+			}, this.animation_speed)
 		}
 
 		this.bounceBack = function(){
@@ -315,9 +328,30 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 				self.animation_speed = self.orig_anim_speed;
 				$rootScope.$apply();
 			}, this.animation_speed)
+			this.redraw();
 		}
 
+		this.redraw = function(){
+			console.log('redraw');
+			for(var i in this.squares){
+				for(var j in this.squares[i]){
+					var square = this.squares[i][j];
+					if(square.x>this.offset.x - this.buffer_size && square.x <= this.offset.x + this.viewport_size.width + this.buffer_size){
+						//if(square.y>this.offset.y && square.y<=this.offset.y + this.viewport_size.height){
+						if(square.y>(-1)*this.offset.y-this.buffer_size && square.y<=(-1)*this.offset.y + this.viewport_size.height + this.buffer_size){
+							//console.log(square.y, (-1)*this.offset.y + this.viewport_size.height);
+							square.visible = true;
+						}else{
+							square.visible = false;
+						}
+					}else{
+						square.visible = false;
+					}
+				}
+			}
+		}
 
+		this.redraw();
 
 		return this;
 	}

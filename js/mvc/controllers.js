@@ -45,3 +45,11 @@ app.controller('gridTestController', ['$scope', 'Grid', function($scope, Grid){
 		$scope.grid.move(a,b);
 	}
 }])
+
+app.controller('testController', ['$scope', function($scope){
+	$scope.arr  = [1,2,3];
+
+	$scope.add = function(){
+		$scope.arr.push(Math.round(Math.random()*1000));
+	}
+}]);

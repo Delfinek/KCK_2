@@ -5,16 +5,41 @@ body {
   width: 35px;
   height: 35px;
   border: 1px solid black;
-  display: inline-block;
-  white-space: nowrap;
-  box-sizing: border-box; }
+  display: block;
+  box-sizing: border-box;
+  position: absolute; }
 
 .grid_square.obstacle {
   background-color: gray; }
 
 .grid_container {
   overflow: hidden;
-  white-space: nowrap; }
+  white-space: nowrap;
+  position: relative;
+  background-color: black; }
 
 .grid_row {
   position: relative; }
+
+/* starting animations */
+.my-special-animation.ng-enter {
+  -webkit-transition: 0.5s linear all;
+  -moz-transition: 0.5s linear all;
+  -o-transition: 0.5s linear all;
+  transition: 0.5s linear all;
+  opacity: 0; }
+
+/* destination animations */
+.my-special-animation.ng-enter.ng-enter-active {
+  opacity: 1; }
+
+.fade-animation.ng-enter,
+.fade-animation.ng-move {
+  -webkit-transition: all linear 100ms;
+  transition: all linear 100ms; }
+
+.fade-animation.ng-enter {
+  opacity: 0; }
+
+.fade-animation.ng-enter.ng-enter-active {
+  opacity: 1; }

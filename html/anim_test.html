@@ -1,0 +1,13 @@
+<div ng-controller='testController'>
+	<button ng-click='add()'>add</button>
+	<div style='background-color:green; color:white; width:200px; margin:10px; padding:5px' ng-repeat='num in arr' class='fade-animation'>
+		{{num}}
+	</div>
+
+	<div ng-init="on=true">
+	  <button ng-click="on=!on">Toggle On/Off</button>
+	  <div class="my-special-animation" ng-if="on">
+	    This content will enter and leave
+	  </div>
+	</div>
+</div>

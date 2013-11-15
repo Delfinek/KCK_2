@@ -1,8 +1,8 @@
 {{grid.offset}}
-<div class='grid_container' style='width: {{grid.viewport_size.width*grid.square_size}}px; height:{{grid.viewport_size.width*grid.square_size}}px; '>
+<div class='grid_container' style='width: {{grid.viewport_size.width*grid.square_size}}px; height:{{grid.viewport_size.width*grid.square_size}}px; border: 8px solid black'>
 	<div style='-webkit-transition:all {{grid.animation_speed}}ms; -webkit-transform: translateX({{(-1)*grid.offset.x*grid.square_size}}px) translateY({{grid.offset.y*grid.square_size}}px); -webkit-transition-timing-function:{{grid.anim_ease}};' >
 		<div ng-repeat='row in grid.squares'>
-			<div ng-repeat='square in row' class='grid_square' ng-show='square.x!=undefined' ng-class='{obstacle: square.getContent().isObstacle()}'>
+			<div ng-repeat='square in row | filter:{visible:true}	' class='grid_square fade-animation' ng-show='square.x!=undefined' style='position:absolute; left: {{(square.x-1)*grid.square_size}}px; top: {{(square.y-1)*grid.square_size}}px;' >
 				<div ng-repeat='object in square.getContent().objects' style='width: {{grid.square_size}}px; height:{{grid.square_size}}px; background-image:url(tiles/{{object.sprite.sprite_filename}}); background-position-x:{{(-1)*object.current_frame.left_top[0]*grid.square_size}}px'>
 				</div>
 			</div>
