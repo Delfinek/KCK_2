@@ -235,8 +235,8 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 		this.width = map.width;
 		this.height = map.height;
 		this.viewport_size = {
-			width:8,
-			height:5
+			width:12,
+			height:12
 		}
 		this.squares = [];
 		for(var i=1; i<=this.width; i++){
