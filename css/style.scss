@@ -6,7 +6,7 @@ body{
 .grid_square{
 	width:35px;
 	height:35px;
-	border:1px solid black;
+	/*border:1px solid black;*/
 	display:block;
 	box-sizing:border-box;
 	position:absolute;
@@ -14,6 +14,11 @@ body{
 
 .grid_square.obstacle{
 	background-color:gray;
+}
+
+.grid_object{
+	position:absolute;
+	left:0px;
 }
 
 .grid_container{

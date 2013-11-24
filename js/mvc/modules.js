@@ -8,3 +8,9 @@ var app = angular.module('app', ['ngRoute', 'ngAnimate']).config(['$routeProvide
 			.otherwise({redirectTo: '/start'});
 	}]
 );	
+
+app.filter('iif', function () {
+   return function(input, trueValue, falseValue) {
+        return input ? trueValue : falseValue;
+   };
+});

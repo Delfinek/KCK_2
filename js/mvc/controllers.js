@@ -39,7 +39,7 @@ app.controller('gridTestController', ['$scope', 'Grid', function($scope, Grid){
 	$scope.grid = new Grid();
 	//console.log('gridView', $scope.gridView);
 
-	$scope.step = 8;
+	$scope.step = 3;
 
 	$scope.move = function(a,b){
 		$scope.grid.move(a,b);
@@ -47,6 +47,14 @@ app.controller('gridTestController', ['$scope', 'Grid', function($scope, Grid){
 }])
 
 app.controller('testController', ['$scope', function($scope){
+	$scope.Math = Math;
+
+	$scope.abs = function(x){
+		return Math.abs(x);
+	}
+
+	$scope.blur = true;
+
 	$scope.arr  = [1,2,3];
 
 	$scope.add = function(){

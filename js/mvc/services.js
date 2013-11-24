@@ -164,10 +164,14 @@ app.service('map',  ['tile', 'object_collection', function(tile, object_collecti
 		map.tiles[i]=[];
 		for(var j=1; j<=map.height; j++){
 			map.tiles[i][j]=new tile(i,j);
-			if(Math.round(Math.random()*2)%2==0){
+			var ran = Math.round(Math.random()*3)%3;
+			if(ran==0){
 				map.tiles[i][j].putObject(object_collection.getObjectByID(0));			
-			}else{
+			}else if (ran==1){
 				map.tiles[i][j].putObject(object_collection.getObjectByID(1));			
+			}else{
+				map.tiles[i][j].putObject(object_collection.getObjectByID(2));
+				map.tiles[i][j].putObject(object_collection.getObjectByID(0));
 			}
 			//console.log(map.tiles[i][j].getContentL());
 			cur++;
@@ -188,6 +192,7 @@ app.factory('grid_square', ['map', function(map){
 			this.x=x;
 		this.y=y;
 		this.tile = map.getTile(x,y);
+		this.vertical_center_offset = 0;
 
 		this.getContent = function(){
 			return map.getTile(x,y);
@@ -230,8 +235,8 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 		this.width = map.width;
 		this.height = map.height;
 		this.viewport_size = {
-			width:10,
-			height:10
+			width:8,
+			height:5
 		}
 		this.squares = [];
 		for(var i=1; i<=this.width; i++){
@@ -242,8 +247,8 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 		}
 
 		this.offset = {
-			x: 0,
-			y: 0
+			x: 50,
+			y: -50
 		}
 
 		this.temp_offset = {
@@ -333,9 +338,16 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 
 		this.redraw = function(){
 			console.log('redraw');
+			var view_center = {
+				x: self.offset.x+self.viewport_size.width/2,
+				y: self.offset.y-self.viewport_size.height/2
+			}
+			console.log("view_center", view_center);
 			for(var i in this.squares){
 				for(var j in this.squares[i]){
 					var square = this.squares[i][j];
+					square.vertical_center_offset = Math.abs(square.y+view_center.y);
+					//console.log(square.y, view_center.y, square.vertical_center_offset);
 					if(square.x>this.offset.x - this.buffer_size && square.x <= this.offset.x + this.viewport_size.width + this.buffer_size){
 						//if(square.y>this.offset.y && square.y<=this.offset.y + this.viewport_size.height){
 						if(square.y>(-1)*this.offset.y-this.buffer_size && square.y<=(-1)*this.offset.y + this.viewport_size.height + this.buffer_size){
@@ -410,6 +422,7 @@ app.service('object_collection', ['object', 'sprite', function(object, sprite){
 	collection.objects[0] = new object({
 		name: 'grass',
 		isObstacle: false,
+		perpendicular: false,
 		sprite: new sprite({
 			sprite_filename: 'land.png',
 			square_size: 35, //not necessary, can be set by default
@@ -430,6 +443,7 @@ app.service('object_collection', ['object', 'sprite', function(object, sprite){
 	collection.objects[1] = new object({
 		name: 'water',
 		isObstacle: true,
+		perpendicular: false,
 		sprite: new sprite({
 			sprite_filename: 'land.png',
 			square_size: 35, //not necessary, can be set by default
@@ -443,6 +457,22 @@ app.service('object_collection', ['object', 'sprite', function(object, sprite){
 					height:1,
 					width:1,
 					left_top: [1,1]
+				}
+			}
+		})
+	});
+	collection.objects[2] = new object({
+		name: 'tree',
+		isObstacle: true,
+		perpendicular: true,
+		sprite: new sprite({
+			sprite_filename: 'tree.png',
+			square_size: 35, //not necessary, can be set by default
+			frames: {
+				'frame1': {
+					height:2,
+					width:1,
+					left_top: [0,0]
 				}
 			}
 		})
