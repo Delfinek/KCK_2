@@ -224,7 +224,7 @@ app.factory('grid_square', ['map', function(map){
 app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, map, $rootScope){
 	var gridL = function(){
 		var self = this;
-		this.square_size=35;
+		this.square_size=40;
 		this.animation_speed = 200;
 		this.max_animation_speed = this.animation_speed*3;
 		this.default_anim_ease = 'ease-in-out';
@@ -235,8 +235,8 @@ app.factory('Grid', ['grid_square', 'map', '$rootScope', function(grid_square, m
 		this.width = map.width;
 		this.height = map.height;
 		this.viewport_size = {
-			width:8,
-			height:5
+			width:16,
+			height:9
 		}
 		this.squares = [];
 		for(var i=1; i<=this.width; i++){
@@ -424,8 +424,8 @@ app.service('object_collection', ['object', 'sprite', function(object, sprite){
 		isObstacle: false,
 		perpendicular: false,
 		sprite: new sprite({
-			sprite_filename: 'land.png',
-			square_size: 35, //not necessary, can be set by default
+			sprite_filename: 'nowaTrawa.png',
+			//square_size: 35, //not necessary, can be set by default
 			frames: {
 				'frame1': {
 					height:1,
@@ -446,7 +446,7 @@ app.service('object_collection', ['object', 'sprite', function(object, sprite){
 		perpendicular: false,
 		sprite: new sprite({
 			sprite_filename: 'land.png',
-			square_size: 35, //not necessary, can be set by default
+			//square_size: 35, //not necessary, can be set by default
 			frames: {
 				'frame1': {
 					height:1,
@@ -467,7 +467,7 @@ app.service('object_collection', ['object', 'sprite', function(object, sprite){
 		perpendicular: true,
 		sprite: new sprite({
 			sprite_filename: 'tree.png',
-			square_size: 35, //not necessary, can be set by default
+			//square_size: 35, //not necessary, can be set by default
 			frames: {
 				'frame1': {
 					height:2,
